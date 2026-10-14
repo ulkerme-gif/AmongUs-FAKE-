@@ -9,7 +9,7 @@ Tarayıcıda çalışan, özgün çizimlere sahip tek ve çok oyunculu bir uzay 
 3. Pages kaynağını seçtikten sonra **Actions → Deploy GitHub Pages → Run workflow** ile ilk dağıtımı başlat. Sonraki `main` push'ları otomatik dağıtılır.
 4. GitHub Pages adresi hazır olduğunda bağlantıyı iPad'de Safari ile aç.
 
-Derleme veya sunucu tarafı gerekmiyor. iPad'de yatay ekran önerilir; sayfa dokunmatik yön tuşlarına ve büyük etkileşim düğmelerine göre düzenlenir.
+Sayfa GitHub Pages'te derlemesiz yayımlanır. Çevrimiçi mod PeerJS CDN'ine ve eşleştirme servisine internet erişimi ister; oyun durumu oda sahibinin cihazında çalışır. iPad'de yatay ekran önerilir.
 
 ## Çevrimiçi oyun
 
