@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1116">
+  <meta name="description" content="Yörüngedeki bir araştırma gemisinde ekibini koru, görevleri tamamla ve aralarına karışan sabotajcıyı bul.">
+  <title>SON VARDİYA — Mürettebat oyunu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="wordmark" href="#" aria-label="Son Vardiya ana ekran">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>SON <b>VARDİYA</b></span>
+      </a>
+      <div class="ship-id"><span class="live-dot"></span> KEPLER-09 <span class="separator">/</span> DERİN UZAY</div>
+      <div class="top-stats">
+        <span class="stat-chip"><span class="chip-label">TUR</span><b id="round-time">03:00</b></span>
+        <span class="stat-chip crew-stat"><span class="chip-label">EKİP</span><b id="crew-count">06</b></span>
+      </div>
+    </header>
+
+    <main class="game-layout">
+      <section class="play-column" aria-label="Oyun alanı">
+        <div class="mission-bar">
+          <div class="mission-state"><span class="state-icon" id="state-icon">◈</span><span id="status-text">GÖREV BEKLİYOR</span></div>
+          <div class="current-room" id="room-label">GEMİ HARİTASI <span>·</span> KEPLER-09</div>
+          <button class="map-toggle" id="map-toggle" type="button" title="Harita görevlerini göster" aria-label="Harita görevlerini göster">⌖</button>
+        </div>
+        <div class="stage-wrap">
+          <canvas id="game-canvas" width="1000" height="680" aria-label="Dokunmatik veya klavye ile oynanabilen uzay gemisi haritası"></canvas>
+          <div class="canvas-vignette" aria-hidden="true"></div>
+          <div class="map-key" id="map-key" aria-hidden="true"></div>
+          <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        </div>
+        <div class="control-dock">
+          <div class="movement" aria-label="Hareket kontrolleri">
+            <button class="move-button move-up" type="button" data-dir="up" aria-label="Yukarı">↑</button>
+            <button class="move-button move-left" type="button" data-dir="left" aria-label="Sola">←</button>
+            <button class="move-button move-down" type="button" data-dir="down" aria-label="Aşağı">↓</button>
+            <button class="move-button move-right" type="button" data-dir="right" aria-label="Sağa">→</button>
+          </div>
+          <div class="dock-hint"><span class="keycap">W A S D</span><span>HAREKET</span></div>
+          <div class="action-buttons">
+            <button class="action-button secondary" id="report-button" type="button"><span class="action-icon">!</span><span>RAPOR</span></button>
+            <button class="action-button primary" id="use-button" type="button"><span class="action-icon">↗</span><span>ETKİLEŞ</span></button>
+            <button class="action-button danger" id="role-action" type="button"><span class="action-icon">✳</span><span>—</span></button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side-panel" aria-label="Görev ve ekip bilgileri">
+        <section class="panel-section objective-section">
+          <div class="section-heading"><span>GÖREV LİSTESİ</span><span class="section-index">01</span></div>
+          <div class="progress-line"><div class="progress-track"><span id="task-progress-bar"></span></div><b id="task-count">0 / 3</b></div>
+          <div class="task-list" id="task-list"></div>
+          <button class="text-button" id="emergency-button" type="button"><span>＋</span> ACİL TOPLANTI <kbd>R</kbd></button>
+        </section>
+        <section class="panel-section crew-section">
+          <div class="section-heading"><span>MÜRETTEBAT</span><span class="section-index" id="roster-count">06 YAŞIYOR</span></div>
+          <div class="crew-list" id="crew-list"></div>
+        </section>
+        <section class="panel-section comms-section">
+          <div class="section-heading"><span>GEMİ KAYDI</span><span class="signal">● CANLI</span></div>
+          <div class="event-log" id="event-log" aria-live="polite"></div>
+        </section>
+        <footer class="panel-footer"><span>KEPLER RESEARCH DIVISION</span><span>V. 09.14</span></footer>
+      </aside>
+    </main>
+    <div class="mobile-actions" aria-hidden="true"></div>
+  </div>
+
+  <div class="overlay intro-overlay" id="intro-overlay">
+    <section class="dialog intro-dialog" role="dialog" aria-modal="true" aria-labelledby="intro-title">
+      <div class="dialog-kicker"><span class="live-dot"></span> KEPLER-09 · SON İLETİŞİM 04:17</div>
+      <h1 id="intro-title">GÜVEN <span>ARIZA VERDİ.</span></h1>
+      <p class="intro-copy">Gemide bir sabotajcı var. Görevleri bitir, şüpheli hareketleri takip et ve ekibini sağ çıkar.</p>
+      <div class="role-picker" role="group" aria-label="Rol seçimi">
+        <button class="role-choice selected" type="button" data-role="random"><span class="role-symbol">◉</span><span><b>RASTGELE</b><small>Hangi tarafta olacağını gör</small></span><span class="choice-check">✓</span></button>
+        <button class="role-choice" type="button" data-role="crew"><span class="role-symbol crew-symbol">◇</span><span><b>MÜRETTEBAT</b><small>Görevleri tamamla, sabotajcıyı bul</small></span><span class="choice-check">✓</span></button>
+        <button class="role-choice" type="button" data-role="impostor"><span class="role-symbol imp-symbol">✳</span><span><b>SABOTAJCI</b><small>Aralarına karış ve gemiyi sabote et</small></span><span class="choice-check">✓</span></button>
+      </div>
+      <button class="start-button" id="start-button" type="button">TURA BAŞLA <span>→</span></button>
+      <div class="input-note"><span>WASD / OK TUŞLARI</span><i></i><span>TABLETTE DOKUNMATİK KONTROLLER</span></div>
+    </section>
+  </div>
+
+  <div class="overlay hidden" id="task-overlay">
+    <section class="dialog task-dialog" role="dialog" aria-modal="true" aria-labelledby="task-title">
+      <button class="dialog-close" type="button" data-close="task-overlay" aria-label="Kapat">×</button>
+      <div class="dialog-kicker">GEMİ SİSTEMİ · <span id="task-room">KÖPRÜ</span></div>
+      <h2 id="task-title">SİNYALİ EŞLEŞTİR</h2>
+      <p id="task-description">Bağlantı sırasını girerek sistemi eşitle.</p>
+      <div class="sequence-display" id="sequence-display"></div>
+      <div class="sequence-pad" id="sequence-pad"></div>
+      <div class="task-feedback" id="task-feedback">SIRAYI GİR</div>
+      <button class="cancel-button" type="button" data-close="task-overlay">İPTAL ET</button>
+    </section>
+  </div>
+
+  <div class="overlay hidden" id="meeting-overlay">
+    <section class="dialog meeting-dialog" role="dialog" aria-modal="true" aria-labelledby="meeting-title">
+      <div class="meeting-banner"><span>!</span><div><b>ACİL TOPLANTI</b><small id="meeting-reason">Mürettebat bir araya geliyor</small></div><span class="meeting-number">KEPLER-09</span></div>
+      <h2 id="meeting-title">KİM ŞÜPHELİ?</h2>
+      <p class="meeting-copy">Bir ekip üyesine oy ver. En çok oyu alan kişi gemiden çıkarılır.</p>
+      <div class="voting-list" id="voting-list"></div>
+      <button class="skip-vote" id="skip-vote" type="button">OY KULLANMADAN GEÇ</button>
+    </section>
+  </div>
+
+  <div class="overlay hidden" id="result-overlay">
+    <section class="dialog result-dialog" role="dialog" aria-modal="true" aria-labelledby="result-title">
+      <div class="result-mark" id="result-mark">✓</div>
+      <div class="dialog-kicker" id="result-kicker">TUR TAMAMLANDI</div>
+      <h2 id="result-title">GEMİ GÜVENDE</h2>
+      <p id="result-copy"></p>
+      <button class="start-button" id="restart-button" type="button">YENİ TUR <span>↻</span></button>
+    </section>
+  </div>
+</body>
+</html>
