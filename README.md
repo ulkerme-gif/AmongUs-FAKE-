@@ -1,15 +1,22 @@
 # Son Vardiya
 
-Tarayıcıda çalışan, özgün çizimlere sahip tek oyunculu bir uzay gemisi sosyal çıkarım oyunu. Mürettebat görevleri tamamlarken sabotajcıyı bulmaya çalışır; sabotajcı ise sistemleri bozup ekibi etkisiz hale getirmeye çalışır.
+Tarayıcıda çalışan, özgün çizimlere sahip tek ve çok oyunculu bir uzay gemisi sosyal çıkarım oyunu. Mürettebat görevleri tamamlarken sabotajcıyı bulmaya çalışır; sabotajcı ise sistemleri bozup ekibi etkisiz hale getirmeye çalışır.
 
 ## GitHub Pages'te yayınlama
 
-1. Bu dosyaları GitHub deposunun ana dalına gönder.
-2. Depoda **Settings → Pages** bölümünü aç.
-3. **Deploy from a branch** seçeneğini, `main` dalını ve `/(root)` klasörünü seçip kaydet.
-4. GitHub Pages adresi hazır olduğunda aynı bağlantıyı iPad'de Safari ile aç.
+1. Değişiklikleri `main` dalına gönder.
+2. Depoda **Settings → Pages** bölümünü açıp **Build and deployment → Source → GitHub Actions** seç.
+3. Pages kaynağını seçtikten sonra **Actions → Deploy GitHub Pages → Run workflow** ile ilk dağıtımı başlat. Sonraki `main` push'ları otomatik dağıtılır.
+4. GitHub Pages adresi hazır olduğunda bağlantıyı iPad'de Safari ile aç.
 
 Derleme veya sunucu tarafı gerekmiyor. iPad'de yatay ekran önerilir; sayfa dokunmatik yön tuşlarına ve büyük etkileşim düğmelerine göre düzenlenir.
+
+## Çevrimiçi oyun
+
+- Oyuncu adını yazıp **ODA KUR** seç; oluşan dört karakterli kodu veya davet bağlantısını arkadaşlarınla paylaş.
+- Diğer oyuncular aynı Pages bağlantısını açıp kodla katılır. Oda sahibi rolünü seçer ve maçı başlatır; oda en fazla 6 kişiliktir.
+- Oyun oda sahibinin cihazında çalışır; oda sahibi sayfayı açık tutmalıdır. WebRTC tabletler arasında doğrudan bağlantı kurar, oyun sunucusu gerekmez.
+- Bazı modem ve mobil ağlar doğrudan bağlantıyı engelleyebilir. Böyle durumlarda TURN relay yapılandırması gerekir.
 
 ## Kontroller
 

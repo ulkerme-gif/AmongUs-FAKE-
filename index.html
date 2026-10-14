@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <script src="game.js" defer></script>
 </head>
 <body>
   <div class="app-shell">
@@ -31,6 +30,7 @@
         <div class="mission-bar">
           <div class="mission-state"><span class="state-icon" id="state-icon">◈</span><span id="status-text">GÖREV BEKLİYOR</span></div>
           <div class="current-room" id="room-label">GEMİ HARİTASI <span>·</span> KEPLER-09</div>
+          <button class="map-toggle leave-online" id="leave-online-game" type="button" title="Çevrimiçi oyundan ayrıl" aria-label="Çevrimiçi oyundan ayrıl">×</button>
           <button class="map-toggle" id="map-toggle" type="button" title="Harita görevlerini göster" aria-label="Harita görevlerini göster">⌖</button>
         </div>
         <div class="stage-wrap">
@@ -86,8 +86,34 @@
         <button class="role-choice" type="button" data-role="crew"><span class="role-symbol crew-symbol">◇</span><span><b>MÜRETTEBAT</b><small>Görevleri tamamla, sabotajcıyı bul</small></span><span class="choice-check">✓</span></button>
         <button class="role-choice" type="button" data-role="impostor"><span class="role-symbol imp-symbol">✳</span><span><b>SABOTAJCI</b><small>Aralarına karış ve gemiyi sabote et</small></span><span class="choice-check">✓</span></button>
       </div>
+      <section class="online-entry" aria-label="Çevrimiçi oyun">
+        <div class="online-entry-heading"><span>ARKADAŞLARLA OYNA</span><small>PEER-TO-PEER · 2-6 OYUNCU</small></div>
+        <label for="online-name">OYUNCU ADI</label>
+        <input class="online-input" id="online-name" type="text" maxlength="16" value="Oyuncu" autocomplete="nickname">
+        <div class="online-actions">
+          <button class="online-button host-button" id="create-room" type="button">ODA KUR <span>＋</span></button>
+          <div class="join-row">
+            <input class="online-input room-code-input" id="join-code" type="text" maxlength="4" placeholder="KOD" aria-label="Oda kodu" autocapitalize="characters" autocomplete="off" autocorrect="off" spellcheck="false">
+            <button class="online-button join-button" id="join-room" type="button" aria-label="Odaya katıl">KATIL <span>→</span></button>
+          </div>
+        </div>
+        <p class="online-status" id="online-status" role="status" aria-live="polite">Arkadaşlarınla aynı odada buluş.</p>
+      </section>
       <button class="start-button" id="start-button" type="button">TURA BAŞLA <span>→</span></button>
       <div class="input-note"><span>WASD / OK TUŞLARI</span><i></i><span>TABLETTE DOKUNMATİK KONTROLLER</span></div>
+    </section>
+  </div>
+
+  <div class="overlay hidden" id="room-overlay">
+    <section class="dialog room-dialog" role="dialog" aria-modal="true" aria-labelledby="room-title">
+      <div class="dialog-kicker"><span class="live-dot"></span> KEPLER-09 · ÇEVRİMİÇİ LOBİ</div>
+      <h2 id="room-title">ODA KODUN</h2>
+      <div class="room-code-display" id="room-code-display">----</div>
+      <p class="room-status" id="room-status" role="status" aria-live="polite">Oyuncular bekleniyor…</p>
+      <div class="room-roster" id="room-roster"></div>
+      <button class="start-button" id="room-start" type="button">MAÇI BAŞLAT <span>→</span></button>
+      <button class="room-share" id="room-share" type="button">DAVET LİNKİNİ KOPYALA</button>
+      <button class="cancel-button" id="room-leave" type="button">ODADAN ÇIK</button>
     </section>
   </div>
 
@@ -123,5 +149,7 @@
       <button class="start-button" id="restart-button" type="button">YENİ TUR <span>↻</span></button>
     </section>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.5/dist/peerjs.min.js"></script>
+  <script type="module" src="./game.js"></script>
 </body>
 </html>
